@@ -2,6 +2,7 @@ import {
   PropsWithChildren,
   ReactElement,
   createContext,
+  useCallback,
   useEffect,
   useState,
 } from "react";
@@ -18,7 +19,7 @@ const isRouteComponent = (
 };
 
 type ContextValueType = {
-  //
+  navigate: (targetRouteData: RouteItem | RouteItem["pathname"]) => void;
 };
 
 export const RouterContext = createContext<ContextValueType>(null!);
@@ -53,45 +54,77 @@ export default function Router({ children }: PropsWithChildren) {
     );
   });
 
+  const existRoutePathname = useCallback(
+    (pathname: string) => {
+      return routes.find((routeItem) => routeItem.pathname === pathname);
+    },
+    [routes]
+  );
+
+  // TODO: navigate 내부로직 중복부분 리팩토링
+  const navigate = useCallback(
+    (targetRouteData: RouteItem | RouteItem["pathname"]) => {
+      if (typeof targetRouteData === "string") {
+        const pathname = targetRouteData;
+        const findedRouteItem = existRoutePathname(pathname);
+        if (!findedRouteItem) {
+          throw Error(`${pathname} 으로 등록된 컴포넌트가 없습니다.`);
+        }
+
+        if (findedRouteItem.pathname === window.location.pathname) return;
+        // History 객체에 이동할 페이지정보 push
+        window.history.pushState({}, "", findedRouteItem.pathname);
+        setCurrentRouteItem(findedRouteItem);
+      } else {
+        if (targetRouteData.pathname === window.location.pathname) return;
+        // History 객체에 이동할 페이지정보 push
+        window.history.pushState({}, "", targetRouteData.pathname);
+        setCurrentRouteItem(targetRouteData);
+      }
+    },
+    [existRoutePathname]
+  );
+
   // 라우팅 이벤트 이펙트
   useEffect(() => {
-    // anchor 태그 이동 핸들링
-    window.addEventListener("click", (event) => {
+    const handleClick = (event: MouseEvent) => {
       event.preventDefault();
       if (!event.target || (event.target as HTMLElement).tagName !== "A") {
         return;
       }
 
       const $anchor = event.target as HTMLAnchorElement;
-
-      const findedRouteItem = routes.find(
-        (routeItem) => routeItem.pathname === $anchor.pathname
-      );
+      const findedRouteItem = existRoutePathname($anchor.pathname);
       if (!findedRouteItem) {
         throw Error(`${$anchor.pathname} 으로 등록된 컴포넌트가 없습니다.`);
       }
-      if (findedRouteItem.pathname === window.location.pathname) return;
+      navigate(findedRouteItem);
+    };
 
-      // History 객체에 이동할 페이지정보 push
-      window.history.pushState({}, "", $anchor.pathname);
-      setCurrentRouteItem(findedRouteItem);
-    });
+    window.addEventListener("click", handleClick);
 
     // 브라우저 뒤로가기 / 앞으로가기 이벤트핸들링
-    window.addEventListener("popstate", (event) => {
+    const handlePopState = (event: PopStateEvent) => {
       console.log("Popstate event triggered!");
       console.log("Type: ", event);
-      console.log("Location: " + document.location);
+      console.log("Location: " + window.location);
       console.log("State: " + JSON.stringify(event.state));
 
-      window.history.replaceState(event.state, "", document.location.pathname);
-    });
+      window.history.replaceState(event.state, "", window.location.pathname);
+      return;
+    };
+    window.addEventListener("popstate", handlePopState);
 
-    return () => {};
-  }, [routes]);
+    return () => {
+      window.removeEventListener("click", handleClick);
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [existRoutePathname, navigate, routes]);
+
+  const value = { navigate };
 
   return (
-    <RouterContext.Provider value={{}}>
+    <RouterContext.Provider value={value}>
       {currentRouteItem ? (
         currentRouteItem.component
       ) : (

@@ -1,4 +1,4 @@
 import { useContext } from "react";
 import { RouterContext } from "./Router";
 
-export const useRouterContext = () => useContext(RouterContext);
+export const useRouter = () => useContext(RouterContext);

@@ -1,10 +1,9 @@
-import NavigationBar from "../components/NavigationBar";
+import React from "react";
 
 export default function HomePage() {
   return (
-    <div className="page-wrapper">
+    <React.Fragment>
       <h2>HomePage</h2>
-      <NavigationBar />
-    </div>
+    </React.Fragment>
   );
 }
