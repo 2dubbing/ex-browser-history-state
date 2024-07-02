@@ -3,12 +3,12 @@ import "./index.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import Route from "./components/Router/Route";
-import HomePage from "./\bpages/HomePage";
-import AboutPage from "./\bpages/AboutPage";
-import ProfilePage from "./\bpages/ProfilePage";
-import SettingPage from "./\bpages/SettingPage";
+import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
+import ProfilePage from "./pages/ProfilePage";
+import SettingPage from "./pages/SettingPage";
 import Router from "./components/Router/Router";
-import Layout from "./\bpages/Layout";
+import Layout from "./pages/Layout";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.Fragment>
