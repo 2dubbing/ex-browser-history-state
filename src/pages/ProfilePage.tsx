@@ -1,10 +1,7 @@
 import React from "react";
 import LinkButton from "../components/LinkButton";
-import usePushHistory from "../hooks/usePushHistory";
 
 export default function ProfilePage() {
-  usePushHistory();
-
   const handleClick = () => {
     window.history.back();
   };
