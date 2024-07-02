@@ -1,16 +1,24 @@
 import { useEffect } from "react";
+import { useRouter } from "../components/SimpleRouter";
 
 export default function usePushHistory(pathnames = ["/"]) {
+  const { traceHistoryStack, setTraceHistoryStack } = useRouter();
+
   useEffect(() => {
-    // * 브라우저 히스토리에 루트경로 강제 주입
+    // * 브라우저 히스토리에 경로 추가
+    console.log("히스토리 length: ", window.history.length);
     setTimeout(() => {
-      const cached = window.location.pathname;
       pathnames.forEach((pathname) => {
+        // setTraceHistoryStack(traceHistoryStack.concat(pathname));
         window.history.pushState(null, "", pathname);
+        console.log("pathname추가: ", pathname);
+        console.log("히스토리 length: ", window.history.length);
       });
-      window.history.replaceState(null, "", cached);
-    }, 0);
-  }, [pathnames]);
+      // window.history.replaceState(null, "", cached);
+    }, 3000);
+    setTraceHistoryStack(traceHistoryStack.concat(...pathnames));
+    console.log("traceHistoryStack: ", traceHistoryStack);
+  }, []);
 
   return null;
 }

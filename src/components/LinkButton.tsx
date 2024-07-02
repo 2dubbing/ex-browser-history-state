@@ -1,5 +1,5 @@
 import { ComponentPropsWithoutRef, MouseEvent, PropsWithChildren } from "react";
-import { useRouter } from "./Router/useRouter";
+import { useRouter } from "./SimpleRouter/useRouter";
 
 interface Props extends ComponentPropsWithoutRef<"button"> {
   pathname?: string;

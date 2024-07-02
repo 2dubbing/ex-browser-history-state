@@ -3,7 +3,7 @@ import LinkButton from "../components/LinkButton";
 import usePushHistory from "../hooks/usePushHistory";
 
 export default function SettingPage() {
-  usePushHistory(["/", "/about", "/profile", "/setting"]);
+  usePushHistory(["/", "/about", "/profile"]);
 
   const handleClick = () => {
     window.history.back();

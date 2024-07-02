@@ -20,12 +20,17 @@ const isRouteComponent = (
 
 type ContextValueType = {
   navigate: (targetRouteData: RouteItem | RouteItem["pathname"]) => void;
+  traceHistoryStack: string[];
+  setTraceHistoryStack: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export const RouterContext = createContext<ContextValueType>(null!);
 
 export default function Router({ children }: PropsWithChildren) {
+  const [traceHistoryStack, setTraceHistoryStack] = useState<string[]>([]);
+
   const [routes] = useState<RouteItem[]>(() => {
+    console.log("최초 히스토리 length: ", window.history.length);
     console.log("route 등록 처리");
     return (
       React.Children.map(children, (routeComponent) => {
@@ -50,7 +55,7 @@ export default function Router({ children }: PropsWithChildren) {
     return (
       routes.find(
         (routeItem) => routeItem.pathname === window.location.pathname
-      ) || routes[0]
+      ) ?? routes[0]
     );
   });
 
@@ -63,7 +68,10 @@ export default function Router({ children }: PropsWithChildren) {
 
   // TODO: navigate 내부로직 중복부분 리팩토링
   const navigate = useCallback(
-    (targetRouteData: RouteItem | RouteItem["pathname"]) => {
+    (
+      targetRouteData: RouteItem | RouteItem["pathname"],
+      option?: { replace?: boolean }
+    ) => {
       if (typeof targetRouteData === "string") {
         const pathname = targetRouteData;
         const findedRouteItem = existRoutePathname(pathname);
@@ -71,18 +79,29 @@ export default function Router({ children }: PropsWithChildren) {
           throw Error(`${pathname} 으로 등록된 컴포넌트가 없습니다.`);
         }
 
-        if (findedRouteItem.pathname === window.location.pathname) return;
-        // History 객체에 이동할 페이지정보 push
-        window.history.pushState({}, "", findedRouteItem.pathname);
+        // History 객체에 이동할 페이지정보 push or replace
+        if (option?.replace) {
+          setTraceHistoryStack([
+            ...traceHistoryStack.slice(0, traceHistoryStack.length - 1),
+            findedRouteItem.pathname,
+          ]);
+          window.history.replaceState({}, "", findedRouteItem.pathname);
+        } else {
+          setTraceHistoryStack(
+            traceHistoryStack.concat(findedRouteItem.pathname)
+          );
+          window.history.pushState({}, "", findedRouteItem.pathname);
+        }
         setCurrentRouteItem(findedRouteItem);
       } else {
-        if (targetRouteData.pathname === window.location.pathname) return;
-        // History 객체에 이동할 페이지정보 push
+        setTraceHistoryStack(
+          traceHistoryStack.concat(targetRouteData.pathname)
+        );
         window.history.pushState({}, "", targetRouteData.pathname);
         setCurrentRouteItem(targetRouteData);
       }
     },
-    [existRoutePathname]
+    [existRoutePathname, traceHistoryStack]
   );
 
   // 라우팅 이벤트 이펙트
@@ -110,8 +129,7 @@ export default function Router({ children }: PropsWithChildren) {
       console.log("Location: " + window.location);
       console.log("State: " + JSON.stringify(event.state));
 
-      window.history.replaceState(event.state, "", window.location.pathname);
-      return;
+      navigate(window.location.pathname, { replace: true });
     };
     window.addEventListener("popstate", handlePopState);
 
@@ -121,7 +139,9 @@ export default function Router({ children }: PropsWithChildren) {
     };
   }, [existRoutePathname, navigate, routes]);
 
-  const value = { navigate };
+  const value = { navigate, traceHistoryStack, setTraceHistoryStack };
+
+  console.log("현재 렌더 컴포넌트: ", currentRouteItem);
 
   return (
     <RouterContext.Provider value={value}>
