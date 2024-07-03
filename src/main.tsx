@@ -8,12 +8,12 @@ import ProfilePage from "./pages/ProfilePage";
 import SettingPage from "./pages/SettingPage";
 import Layout from "./pages/Layout";
 import SimpleRouter from "./components/SimpleRouter";
-import BrowerHistory from "./components/BrowerHistory/BrowerHistory";
+import History from "./components/History/History";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.Fragment>
     <Layout>
-      <BrowerHistory>
+      <History>
         <SimpleRouter.Router>
           <SimpleRouter.Route pathname="/">
             <HomePage />
@@ -28,7 +28,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <SettingPage />
           </SimpleRouter.Route>
         </SimpleRouter.Router>
-      </BrowerHistory>
+      </History>
     </Layout>
   </React.Fragment>
 );

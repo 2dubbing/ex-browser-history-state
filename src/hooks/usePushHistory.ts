@@ -1,19 +1,21 @@
 import { useEffect } from "react";
-import { useHistory } from "../components/BrowerHistory/useHistory";
+import { useHistory } from "../components/History/useHistory";
+
+const DEFAULT_PATHNAMES = ["/", "/about", "/profile", "/setting"];
 
 // 브라우저 히스토리에 경로 추가
-export default function usePushHistory(pathnames = ["/"]) {
-  const { windowHistory } = useHistory();
+export default function usePushHistory(pathnames = DEFAULT_PATHNAMES) {
+  const { windowHistory, browserHistory } = useHistory();
 
   useEffect(() => {
-    console.log("히스토리 length: ", windowHistory.length);
     setTimeout(() => {
       pathnames.forEach((pathname) => {
-        windowHistory.pushState(null, "", pathname);
-        console.log("히스토리 length: ", windowHistory.length);
+        // windowHistory.pushState(null, "", pathname);
+        console.log("browser.history index: ", browserHistory.push(pathname));
+        console.log("window.history length: ", windowHistory.length);
       });
     }, 3000);
-  }, [pathnames, windowHistory]);
+  }, [browserHistory, pathnames, windowHistory]);
 
   return null;
 }

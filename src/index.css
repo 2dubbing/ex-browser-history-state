@@ -38,3 +38,8 @@ button:focus-visible {
 nav > a {
   padding: 4px 10px;
 }
+
+.btn-group {
+  display: flex;
+  column-gap: 10px;
+}
