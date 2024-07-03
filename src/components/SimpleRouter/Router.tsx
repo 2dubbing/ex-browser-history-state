@@ -10,6 +10,7 @@ import { RouteItem, RouteProps } from "./type";
 import React from "react";
 import { isReactComponent } from "../../utils";
 import Route from "./Route";
+import usePopStateEvent from "./hooks/usePopStateEvent";
 
 const RouteType = (<Route pathname="" />).type;
 const isRouteComponent = (
@@ -18,8 +19,11 @@ const isRouteComponent = (
   return component.type === RouteType;
 };
 
-type ContextValueType = {
-  navigate: (targetRouteData: RouteItem | RouteItem["pathname"]) => void;
+export type ContextValueType = {
+  navigate: (
+    targetRouteData: RouteItem | RouteItem["pathname"],
+    option?: { replace?: boolean }
+  ) => void;
 };
 
 export const RouterContext = createContext<ContextValueType>(null!);
@@ -92,7 +96,7 @@ export default function Router({ children }: PropsWithChildren) {
 
   // 라우팅 이벤트 이펙트
   useEffect(() => {
-    const handleClick = (event: MouseEvent) => {
+    const handleClickAnchorTag = (event: MouseEvent) => {
       event.preventDefault();
       if (!event.target || (event.target as HTMLElement).tagName !== "A") {
         return;
@@ -106,24 +110,14 @@ export default function Router({ children }: PropsWithChildren) {
       navigate(findedRouteItem);
     };
 
-    window.addEventListener("click", handleClick);
-
-    // 브라우저 뒤로가기 / 앞으로가기 이벤트핸들링
-    const handlePopState = (event: PopStateEvent) => {
-      console.log("Popstate event triggered!");
-      console.log("Type: ", event);
-      console.log("Location: " + window.location);
-      console.log("State: " + JSON.stringify(event.state));
-
-      navigate(window.location.pathname, { replace: true });
-    };
-    window.addEventListener("popstate", handlePopState);
+    window.addEventListener("click", handleClickAnchorTag);
 
     return () => {
-      window.removeEventListener("click", handleClick);
-      window.removeEventListener("popstate", handlePopState);
+      window.removeEventListener("click", handleClickAnchorTag);
     };
   }, [existRoutePathname, navigate, routes]);
+
+  usePopStateEvent({ navigate });
 
   const value = { navigate };
 
