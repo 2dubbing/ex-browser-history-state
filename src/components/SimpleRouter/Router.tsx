@@ -11,6 +11,7 @@ import { isReactComponent } from "../../utils";
 import Route from "./Route";
 import usePopStateEvent from "./hooks/usePopStateEvent";
 import useRouteAnchorTag from "./hooks/useRouteAnchorTag";
+import { useHistory } from "../BrowerHistory/useHistory";
 
 const RouteType = (<Route pathname="" />).type;
 const isRouteComponent = (
@@ -26,8 +27,10 @@ export type ContextValueType = {
 export const RouterContext = createContext<ContextValueType>(null!);
 
 export default function Router({ children }: PropsWithChildren) {
+  const { windowHistory } = useHistory();
+
   const [routes] = useState<RouteItem[]>(() => {
-    console.log("최초 히스토리 length: ", window.history.length);
+    console.log("최초 히스토리 length: ", windowHistory.length);
     console.log("route 등록");
     return (
       React.Children.map(children, (routeComponent) => {
@@ -72,13 +75,13 @@ export default function Router({ children }: PropsWithChildren) {
 
       // History 객체에 이동할 페이지정보 push or replace
       if (option?.replace) {
-        window.history.replaceState({}, "", findedRouteItem.pathname);
+        windowHistory.replaceState({}, "", findedRouteItem.pathname);
       } else {
-        window.history.pushState({}, "", findedRouteItem.pathname);
+        windowHistory.pushState({}, "", findedRouteItem.pathname);
       }
       setCurrentRouteItem(findedRouteItem);
     },
-    [existRoutePathname]
+    [existRoutePathname, windowHistory]
   );
 
   // 페이지 전환 이벤트 훅

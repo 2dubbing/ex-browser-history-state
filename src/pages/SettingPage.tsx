@@ -1,12 +1,14 @@
 import React from "react";
 import LinkButton from "../components/LinkButton";
 import usePushHistory from "../hooks/usePushHistory";
+import { useHistory } from "../components/BrowerHistory/useHistory";
 
 export default function SettingPage() {
   usePushHistory(["/", "/about", "/profile"]);
+  const { windowHistory } = useHistory();
 
   const handleClick = () => {
-    window.history.back();
+    windowHistory.back();
   };
 
   return (

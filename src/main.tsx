@@ -8,24 +8,27 @@ import ProfilePage from "./pages/ProfilePage";
 import SettingPage from "./pages/SettingPage";
 import Layout from "./pages/Layout";
 import SimpleRouter from "./components/SimpleRouter";
+import BrowerHistory from "./components/BrowerHistory/BrowerHistory";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.Fragment>
     <Layout>
-      <SimpleRouter.Router>
-        <SimpleRouter.Route pathname="/">
-          <HomePage />
-        </SimpleRouter.Route>
-        <SimpleRouter.Route pathname="/about">
-          <AboutPage />
-        </SimpleRouter.Route>
-        <SimpleRouter.Route pathname="/profile">
-          <ProfilePage />
-        </SimpleRouter.Route>
-        <SimpleRouter.Route pathname="/setting">
-          <SettingPage />
-        </SimpleRouter.Route>
-      </SimpleRouter.Router>
+      <BrowerHistory>
+        <SimpleRouter.Router>
+          <SimpleRouter.Route pathname="/">
+            <HomePage />
+          </SimpleRouter.Route>
+          <SimpleRouter.Route pathname="/about">
+            <AboutPage />
+          </SimpleRouter.Route>
+          <SimpleRouter.Route pathname="/profile">
+            <ProfilePage />
+          </SimpleRouter.Route>
+          <SimpleRouter.Route pathname="/setting">
+            <SettingPage />
+          </SimpleRouter.Route>
+        </SimpleRouter.Router>
+      </BrowerHistory>
     </Layout>
   </React.Fragment>
 );
