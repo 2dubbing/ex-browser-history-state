@@ -5,9 +5,12 @@ interface Props {
   navigate: ContextValueType["navigate"];
 }
 
+/**
+ * @name usePopStateEvent
+ * @description windows popstate 이벤트핸들러 훅
+ */
 export default function usePopStateEvent({ navigate }: Props) {
   useEffect(() => {
-    // 브라우저 뒤로가기 / 앞으로가기 이벤트핸들링
     const handlePopState = (event: PopStateEvent) => {
       console.log("Popstate event triggered!");
       console.log("Type: ", event);
@@ -21,7 +24,7 @@ export default function usePopStateEvent({ navigate }: Props) {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, []);
+  }, [navigate]);
 
   return null;
 }
