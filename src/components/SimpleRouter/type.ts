@@ -9,3 +9,5 @@ export type RouteProps = PropsWithChildren<{
   pathname: string;
   component?: React.ReactElement;
 }>;
+
+export type NavigateType = "PUSH" | "POP" | "REPLACE";

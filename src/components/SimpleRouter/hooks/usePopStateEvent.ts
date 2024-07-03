@@ -12,12 +12,11 @@ interface Props {
 export default function usePopStateEvent({ navigate }: Props) {
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
-      console.log("Popstate event triggered!");
-      console.log("Type: ", event);
-      console.log("Location: " + window.location);
-      console.log("State: " + JSON.stringify(event.state));
+      console.log("popstate event: ", event);
+      console.log("popstate pathname: ", window.location.pathname);
+      console.log("popstate state: " + JSON.stringify(event.state));
 
-      navigate(window.location.pathname, { replace: true });
+      // navigate(window.location.pathname, { type: "REPLACE" });
     };
     window.addEventListener("popstate", handlePopState);
 
