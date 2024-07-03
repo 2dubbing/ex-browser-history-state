@@ -20,18 +20,14 @@ const isRouteComponent = (
 
 type ContextValueType = {
   navigate: (targetRouteData: RouteItem | RouteItem["pathname"]) => void;
-  traceHistoryStack: string[];
-  setTraceHistoryStack: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export const RouterContext = createContext<ContextValueType>(null!);
 
 export default function Router({ children }: PropsWithChildren) {
-  const [traceHistoryStack, setTraceHistoryStack] = useState<string[]>([]);
-
   const [routes] = useState<RouteItem[]>(() => {
     console.log("최초 히스토리 length: ", window.history.length);
-    console.log("route 등록 처리");
+    console.log("route 등록");
     return (
       React.Children.map(children, (routeComponent) => {
         if (
@@ -81,27 +77,17 @@ export default function Router({ children }: PropsWithChildren) {
 
         // History 객체에 이동할 페이지정보 push or replace
         if (option?.replace) {
-          setTraceHistoryStack([
-            ...traceHistoryStack.slice(0, traceHistoryStack.length - 1),
-            findedRouteItem.pathname,
-          ]);
           window.history.replaceState({}, "", findedRouteItem.pathname);
         } else {
-          setTraceHistoryStack(
-            traceHistoryStack.concat(findedRouteItem.pathname)
-          );
           window.history.pushState({}, "", findedRouteItem.pathname);
         }
         setCurrentRouteItem(findedRouteItem);
       } else {
-        setTraceHistoryStack(
-          traceHistoryStack.concat(targetRouteData.pathname)
-        );
         window.history.pushState({}, "", targetRouteData.pathname);
         setCurrentRouteItem(targetRouteData);
       }
     },
-    [existRoutePathname, traceHistoryStack]
+    [existRoutePathname]
   );
 
   // 라우팅 이벤트 이펙트
@@ -139,7 +125,7 @@ export default function Router({ children }: PropsWithChildren) {
     };
   }, [existRoutePathname, navigate, routes]);
 
-  const value = { navigate, traceHistoryStack, setTraceHistoryStack };
+  const value = { navigate };
 
   console.log("현재 렌더 컴포넌트: ", currentRouteItem);
 
