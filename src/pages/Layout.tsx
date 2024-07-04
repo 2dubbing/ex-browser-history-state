@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
 import NavigationBar from "../components/NavigationBar";
+import HistoryStack from "../components/HistoryStack";
 
 export default function Layout({ children }: PropsWithChildren) {
   return (
@@ -7,7 +8,12 @@ export default function Layout({ children }: PropsWithChildren) {
       <header>
         <NavigationBar />
       </header>
-      <article>{children}</article>
+      <article className="content-wrapper">
+        <section>{children}</section>
+        <section className="history-stack-wrapper">
+          <HistoryStack />
+        </section>
+      </article>
       <footer></footer>
     </div>
   );

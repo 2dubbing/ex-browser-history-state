@@ -1,12 +1,11 @@
 import React from "react";
 import LinkButton from "../components/LinkButton";
 import { useHistory } from "../components/History/useHistory";
-import usePushHistory from "../hooks/usePushHistory";
 
 type Instance = "w" | "b";
 
 export default function SettingPage() {
-  usePushHistory();
+  // usePushHistory();
   const { windowHistory, browserHistory } = useHistory();
 
   const handleUseBack = (type: Instance) => {
