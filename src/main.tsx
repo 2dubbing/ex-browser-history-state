@@ -12,23 +12,21 @@ import History from "./components/History/History";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.Fragment>
-    <Layout>
-      <History>
-        <SimpleRouter.Router>
-          <SimpleRouter.Route pathname="/">
-            <HomePage />
-          </SimpleRouter.Route>
-          <SimpleRouter.Route pathname="/about">
-            <AboutPage />
-          </SimpleRouter.Route>
-          <SimpleRouter.Route pathname="/profile">
-            <ProfilePage />
-          </SimpleRouter.Route>
-          <SimpleRouter.Route pathname="/setting">
-            <SettingPage />
-          </SimpleRouter.Route>
-        </SimpleRouter.Router>
-      </History>
-    </Layout>
+    <History>
+      <SimpleRouter.Router appLayout={<Layout />}>
+        <SimpleRouter.Route pathname="/">
+          <HomePage />
+        </SimpleRouter.Route>
+        <SimpleRouter.Route pathname="/about">
+          <AboutPage />
+        </SimpleRouter.Route>
+        <SimpleRouter.Route pathname="/profile">
+          <ProfilePage />
+        </SimpleRouter.Route>
+        <SimpleRouter.Route pathname="/setting">
+          <SettingPage />
+        </SimpleRouter.Route>
+      </SimpleRouter.Router>
+    </History>
   </React.Fragment>
 );

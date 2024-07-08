@@ -12,7 +12,7 @@ import Route from "./Route";
 import usePopStateEvent from "./hooks/usePopStateEvent";
 import useRouteAnchorTag from "./hooks/useRouteAnchorTag";
 import { useHistory } from "../History/useHistory";
-import useHistoryListener from "./hooks/useHistoryListener";
+import useBeforeUnloadEvent from "./hooks/useBeforeUnloadEvent";
 
 const RouteType = (<Route pathname="" />).type;
 const isRouteComponent = (
@@ -22,13 +22,20 @@ const isRouteComponent = (
 };
 
 export type ContextValueType = {
-  navigate: (pathname: string, option?: { type?: NavigateType }) => void;
+  navigate: (pathname: string, option?: { type: NavigateType }) => void;
 };
 
 export const RouterContext = createContext<ContextValueType>(null!);
 
-export default function Router({ children }: PropsWithChildren) {
-  const { browserHistory } = useHistory();
+interface Props {
+  appLayout?: React.ReactElement;
+}
+export default function Router({
+  children,
+  appLayout,
+}: PropsWithChildren<Props>) {
+  const { replaceStack, replaceUnusedPathnameWithNewPathname, windowHistory } =
+    useHistory();
 
   const [routes] = useState<RouteItem[]>(() => {
     return (
@@ -66,42 +73,46 @@ export default function Router({ children }: PropsWithChildren) {
   );
 
   const navigate = useCallback(
-    (pathname: string, option?: { type?: NavigateType }) => {
+    (pathname: string, option?: { type: NavigateType }) => {
+      console.log("navigate: ", pathname, option);
+
       const findedRouteItem = existRoutePathname(pathname);
       if (!findedRouteItem) {
         throw Error(`${pathname} 으로 등록된 컴포넌트가 없습니다.`);
       }
-      // History 객체에 이동할 페이지정보 push or replace
-      if (option?.type === "REPLACE") {
-        browserHistory.replace(findedRouteItem.pathname);
-        // windowHistory.replaceState({}, "", findedRouteItem.pathname);
-      } else if (option?.type === "POP") {
-        // *POP ???
-        // windowHistory.pushState({}, "", findedRouteItem.pathname);
+
+      // CASE 1
+      if (option?.type === "PUSH") {
+        windowHistory.pushState({}, "", findedRouteItem.pathname);
+        replaceUnusedPathnameWithNewPathname(findedRouteItem.pathname);
       } else {
-        browserHistory.push(findedRouteItem.pathname);
+        windowHistory.replaceState({}, "", findedRouteItem.pathname);
+        replaceStack(findedRouteItem.pathname);
       }
+
       setCurrentRouteItem(findedRouteItem);
     },
-    [browserHistory, existRoutePathname]
+    [
+      existRoutePathname,
+      replaceStack,
+      replaceUnusedPathnameWithNewPathname,
+      windowHistory,
+    ]
   );
 
-  // 페이지 전환 시 로깅할 이벤트
   useRouteAnchorTag({ navigate });
-  usePopStateEvent({ navigate });
-  useHistoryListener({ navigate });
+  usePopStateEvent();
+  useBeforeUnloadEvent();
 
   const value = { navigate };
 
-  console.log("현재 렌더 컴포넌트: ", currentRouteItem);
+  // console.log("현재 렌더 컴포넌트: ", currentRouteItem);
 
   return (
     <RouterContext.Provider value={value}>
-      {currentRouteItem ? (
-        currentRouteItem.component
-      ) : (
-        <React.Fragment></React.Fragment>
-      )}
+      {currentRouteItem && appLayout
+        ? React.cloneElement(appLayout, {}, currentRouteItem.component)
+        : currentRouteItem.component}
     </RouterContext.Provider>
   );
 }

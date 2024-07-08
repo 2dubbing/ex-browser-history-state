@@ -10,4 +10,4 @@ export type RouteProps = PropsWithChildren<{
   component?: React.ReactElement;
 }>;
 
-export type NavigateType = "PUSH" | "POP" | "REPLACE";
+export type NavigateType = "PUSH" | "REPLACE";
