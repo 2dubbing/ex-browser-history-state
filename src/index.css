@@ -95,9 +95,3 @@ body {
 .history-stack_status .box.current {
   background-color: #535bf2;
 }
-
-.joystick .btn-group {
-  display: flex;
-  flex-direction: column;
-  row-gap: 12px;
-}

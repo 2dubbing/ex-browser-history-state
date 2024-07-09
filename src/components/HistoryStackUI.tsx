@@ -1,13 +1,8 @@
 import React from "react";
 import { useHistory } from "./History/useHistory";
-import LinkButton from "./LinkButton";
 
-export default function HistoryStack() {
+export default function HistoryStackUI() {
   const { currentIndex, stack } = useHistory();
-
-  const handleHistoryBack = () => {};
-
-  const handleHistoryForward = () => {};
 
   return (
     <React.Fragment>
@@ -27,15 +22,6 @@ export default function HistoryStack() {
               <span>{`index: ${idx}`}</span>
             </div>
           ))}
-        </div>
-
-        <div className="joystick">
-          {/* <div className="btn-group">
-            <LinkButton onClick={handleHistoryBack}>history.back()</LinkButton>
-            <LinkButton onClick={handleHistoryForward}>
-              history.forward()
-            </LinkButton>
-          </div> */}
         </div>
       </div>
     </React.Fragment>

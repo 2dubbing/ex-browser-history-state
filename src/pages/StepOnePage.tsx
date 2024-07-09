@@ -1,9 +1,9 @@
 import React from "react";
 
-export default function SettingPage() {
+export default function StepOnePage() {
   return (
     <React.Fragment>
-      <h2>SettingPage</h2>
+      <h2>1단계 페이지</h2>
     </React.Fragment>
   );
 }

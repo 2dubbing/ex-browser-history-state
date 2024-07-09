@@ -1,9 +1,9 @@
 import React from "react";
 
-export default function ProfilePage() {
+export default function MainPage() {
   return (
     <React.Fragment>
-      <h2>ProfilePage</h2>
+      <h2>메인 페이지</h2>
     </React.Fragment>
   );
 }

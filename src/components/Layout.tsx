@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
-import NavigationBar from "../components/NavigationBar";
-import HistoryStack from "../components/HistoryStack";
+import NavigationBar from "./NavigationBar";
+import HistoryStackUI from "./HistoryStackUI";
 import React from "react";
 
 export default function Layout({ children }: PropsWithChildren) {
@@ -12,7 +12,7 @@ export default function Layout({ children }: PropsWithChildren) {
       <article className="main-container">
         <section className="page-wrapper">{children}</section>
         <section className="history-stack-wrapper">
-          <HistoryStack />
+          <HistoryStackUI />
         </section>
       </article>
       <footer></footer>
