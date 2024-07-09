@@ -50,6 +50,22 @@ body {
   align-items: center;
 }
 
+header {
+  display: flex;
+  align-items: center;
+  column-gap: 24px;
+}
+
+.option-wrapper {
+  display: flex;
+  justify-content: center;
+  column-gap: 12px;
+}
+.option-wrapper .radio-group {
+  display: flex;
+  column-gap: 4px;
+}
+
 .main-container {
   width: 100%;
   display: flex;
@@ -57,6 +73,11 @@ body {
 
 .page-wrapper {
   flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .history-stack-wrapper {

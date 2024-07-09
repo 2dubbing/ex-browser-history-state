@@ -10,3 +10,5 @@ export const PAGE_URL_PATHNAMES = [
     label: "3단계",
   },
 ] as const;
+
+export const HISTORY_STATE_TYPE = { PUSH: "PUSH", REPLACE: "REPLACE" } as const;

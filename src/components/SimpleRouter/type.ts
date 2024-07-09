@@ -1,4 +1,5 @@
 import { PropsWithChildren } from "react";
+import { HISTORY_STATE_TYPE } from "../../constant";
 
 export type RouteItem = {
   pathname: string;
@@ -10,4 +11,4 @@ export type RouteProps = PropsWithChildren<{
   component?: React.ReactElement;
 }>;
 
-export type NavigateType = "PUSH" | "REPLACE";
+export type NavigateType = keyof typeof HISTORY_STATE_TYPE;

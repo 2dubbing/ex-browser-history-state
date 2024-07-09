@@ -102,7 +102,7 @@ export default function Router({
 
   useRouteAnchorTag({ navigate });
   usePopStateEvent();
-  useBeforeUnloadEvent();
+  // useBeforeUnloadEvent();
 
   const value = { navigate };
 
