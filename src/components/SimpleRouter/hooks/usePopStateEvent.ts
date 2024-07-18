@@ -16,7 +16,7 @@ export default function usePopStateEvent() {
       console.log("popstate state: " + JSON.stringify(event.state));
       console.log("=======================");
 
-      // 뒤로가기 & 앞으로가기 구분할 수 있는 방법?
+      // TODO: 뒤로가기 & 앞으로가기 구분할 수 있는 방법?
       changeCurrentIndex();
     },
     [changeCurrentIndex]

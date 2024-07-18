@@ -3,6 +3,7 @@ import {
   ReactElement,
   createContext,
   useCallback,
+  useEffect,
   useState,
 } from "react";
 import { NavigateType, RouteItem, RouteProps } from "./type";
@@ -12,7 +13,6 @@ import Route from "./Route";
 import usePopStateEvent from "./hooks/usePopStateEvent";
 import useRouteAnchorTag from "./hooks/useRouteAnchorTag";
 import { useHistory } from "../History/useHistory";
-import useBeforeUnloadEvent from "./hooks/useBeforeUnloadEvent";
 
 const RouteType = (<Route pathname="" />).type;
 const isRouteComponent = (
@@ -34,9 +34,7 @@ export default function Router({
   children,
   appLayout,
 }: PropsWithChildren<Props>) {
-  const { replaceStack, replaceUnusedPathnameWithNewPathname, windowHistory } =
-    useHistory();
-
+  /** @description <Route> 로 등록된 컴포넌트 상태값 */
   const [routes] = useState<RouteItem[]>(() => {
     return (
       React.Children.map(children, (routeComponent) => {
@@ -57,20 +55,29 @@ export default function Router({
     );
   });
 
-  const [currentRouteItem, setCurrentRouteItem] = useState<RouteItem>(() => {
-    return (
-      routes.find(
-        (routeItem) => routeItem.pathname === window.location.pathname
-      ) ?? routes[0]
-    );
-  });
+  const {
+    currentIndex,
+    stack,
+    replaceStack,
+    replaceUnusedPathnameWithNewPathname,
+    windowHistory,
+  } = useHistory();
+  const currentPathname = stack[currentIndex];
 
   const existRoutePathname = useCallback(
-    (pathname: string) => {
+    (pathname: string = currentPathname) => {
       return routes.find((routeItem) => routeItem.pathname === pathname);
     },
-    [routes]
+    [currentPathname, routes]
   );
+
+  const [currentRouteItem, setCurrentRouteItem] = useState<RouteItem>(
+    existRoutePathname() ?? routes[0]
+  );
+
+  useEffect(() => {
+    setCurrentRouteItem(existRoutePathname() ?? routes[0]);
+  }, [currentPathname, existRoutePathname, routes]);
 
   const navigate = useCallback(
     (pathname: string, option?: { type: NavigateType }) => {
@@ -105,8 +112,6 @@ export default function Router({
   // useBeforeUnloadEvent();
 
   const value = { navigate };
-
-  // console.log("현재 렌더 컴포넌트: ", currentRouteItem);
 
   return (
     <RouterContext.Provider value={value}>
