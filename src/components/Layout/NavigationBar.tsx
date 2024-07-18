@@ -1,4 +1,4 @@
-import { PAGE_URL_PATHNAMES } from "../constant";
+import { PAGE_URL_PATHNAMES } from "../../constant";
 
 export default function NavigationBar() {
   return (

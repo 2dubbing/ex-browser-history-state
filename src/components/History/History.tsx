@@ -9,12 +9,10 @@ import { produce } from "immer";
 
 type ContextValueType = {
   currentIndex: number;
-  changeCurrentIndex: () => void;
+  changeCurrentIndex: (settingIndex?: number) => void;
   stack: string[];
   pushStack: (pathname: string) => void;
   replaceStack: (pathname: string) => void;
-  /** @description 사용되지않을 pathname 을 새로운 pathname 으로 대체 */
-  replaceUnusedPathnameWithNewPathname: (pathname: string) => void;
   /** @description window.history 객체 */
   windowHistory: Window["history"];
 };
@@ -29,26 +27,30 @@ export default function History({ children }: PropsWithChildren) {
 
   const windowHistoryRef = useRef(window.history);
 
-  const changeCurrentIndex = useCallback(() => {
-    if (currentIndex === 0) {
-      console.error("현재 사이트에 history 범위를 벗어났습니다.");
-      return;
-    }
-    setCurrentIndex(currentIndex - 1);
-  }, [currentIndex]);
+  const changeCurrentIndex = useCallback(
+    (settingIndex?: number) => {
+      if (settingIndex) {
+        setCurrentIndex(settingIndex);
+        return;
+      }
 
-  const pushStack = useCallback(
-    (pathname: string) => {
-      setCurrentIndex((prevState) => prevState + 1);
-      setStack(stack.concat(pathname));
+      setCurrentIndex(() => {
+        const nextIndex = currentIndex - 1;
+        if (nextIndex === 0) {
+          console.error(
+            "현재 웹사이트의 마지막 페이지 입니다.\n뒤로가기 시, 웹사이트를 벗어나게 됩니다."
+          );
+        }
+        return nextIndex;
+      });
     },
-    [stack]
+    [currentIndex]
   );
 
+  // TODO: replace 시 스택, 인덱스 처리 작업
   const replaceStack = useCallback(
     (pathname: string) => {
       const lastIdx = stack.length;
-
       setStack(
         produce(stack, (draft) => {
           draft.splice(lastIdx - 1, 1, pathname);
@@ -59,13 +61,11 @@ export default function History({ children }: PropsWithChildren) {
     [stack]
   );
 
-  /** @description 사용되지않을 pathname 을 새로운 pathname 으로 대체 */
-  const replaceUnusedPathnameWithNewPathname = (pathname: string) => {
+  const pushStack = (pathname: string) => {
     const newStack = produce(stack, (draft) => {
       draft.splice(currentIndex + 1, 999, pathname);
       return draft;
     });
-
     setStack(newStack);
     setCurrentIndex(newStack.length - 1);
   };
@@ -76,7 +76,7 @@ export default function History({ children }: PropsWithChildren) {
     stack,
     pushStack,
     replaceStack,
-    replaceUnusedPathnameWithNewPathname,
+    // replaceUnusedPathnameWithNewPathname,
     windowHistory: windowHistoryRef.current,
   };
 

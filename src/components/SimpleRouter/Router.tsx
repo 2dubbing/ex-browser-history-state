@@ -13,6 +13,7 @@ import Route from "./Route";
 import usePopStateEvent from "./hooks/usePopStateEvent";
 import useRouteAnchorTag from "./hooks/useRouteAnchorTag";
 import { useHistory } from "../History/useHistory";
+import { useLayout } from "../Layout/useLayout";
 
 const RouteType = (<Route pathname="" />).type;
 const isRouteComponent = (
@@ -49,14 +50,11 @@ export default function Router({ children }: PropsWithChildren) {
     );
   });
 
-  const {
-    currentIndex,
-    stack,
-    replaceStack,
-    replaceUnusedPathnameWithNewPathname,
-    windowHistory,
-  } = useHistory();
+  const { currentIndex, stack, replaceStack, pushStack, windowHistory } =
+    useHistory();
   const currentPathname = stack[currentIndex];
+
+  const { historyStateType } = useLayout();
 
   const existRoutePathname = useCallback(
     (pathname: string = currentPathname) => {
@@ -74,29 +72,31 @@ export default function Router({ children }: PropsWithChildren) {
   }, [currentPathname, existRoutePathname, routes]);
 
   const navigate = useCallback(
-    (pathname: string, option?: { type: NavigateType }) => {
-      console.log("navigate: ", pathname, option);
+    (pathname: string) => {
+      console.log("navigate: ", pathname, historyStateType);
 
       const findedRouteItem = existRoutePathname(pathname);
       if (!findedRouteItem) {
         throw Error(`${pathname} 으로 등록된 컴포넌트가 없습니다.`);
       }
 
-      // CASE 1
-      if (option?.type === "PUSH") {
+      if (historyStateType === "PUSH") {
         windowHistory.pushState({}, "", findedRouteItem.pathname);
-        replaceUnusedPathnameWithNewPathname(findedRouteItem.pathname);
-      } else {
+        pushStack(findedRouteItem.pathname);
+      } else if (historyStateType === "REPLACE") {
         windowHistory.replaceState({}, "", findedRouteItem.pathname);
         replaceStack(findedRouteItem.pathname);
+      } else {
+        // XXX: ???
       }
 
       setCurrentRouteItem(findedRouteItem);
     },
     [
       existRoutePathname,
+      historyStateType,
+      pushStack,
       replaceStack,
-      replaceUnusedPathnameWithNewPathname,
       windowHistory,
     ]
   );

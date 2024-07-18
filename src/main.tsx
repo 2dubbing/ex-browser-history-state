@@ -6,7 +6,7 @@ import HomePage from "./pages/MainPage";
 import StepOnePage from "./pages/StepOnePage";
 import StepTwoPage from "./pages/StepTwoPage";
 import StepThreePage from "./pages/StepThreePage";
-import Layout from "./components/Layout";
+import Layout from "./components/Layout/Layout";
 import SimpleRouter from "./components/SimpleRouter";
 import History from "./components/History/History";
 

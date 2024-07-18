@@ -1,13 +1,14 @@
-import { SyntheticEvent, useState } from "react";
-import { NavigateType } from "./SimpleRouter/type";
-import { HISTORY_STATE_TYPE } from "../constant";
+import { SyntheticEvent } from "react";
+import { HISTORY_STATE_TYPE } from "../../constant";
+import { NavigateType } from "../SimpleRouter/type";
+import { useLayout } from "./useLayout";
 
 export default function OptionBar() {
-  const [value, setValue] = useState<NavigateType>(HISTORY_STATE_TYPE["PUSH"]);
+  const { historyStateType, changeHistoryStateType } = useLayout();
 
   const handleChange = (e: SyntheticEvent<HTMLInputElement>) => {
     const { value } = e.target as HTMLInputElement;
-    setValue(value as NavigateType);
+    changeHistoryStateType(value as NavigateType);
   };
 
   return (
@@ -22,7 +23,7 @@ export default function OptionBar() {
             name="historyStateType"
             type="radio"
             value={HISTORY_STATE_TYPE["PUSH"]}
-            checked={value === HISTORY_STATE_TYPE["PUSH"]}
+            checked={historyStateType === HISTORY_STATE_TYPE["PUSH"]}
             onChange={handleChange}
           />
         </label>
@@ -34,7 +35,7 @@ export default function OptionBar() {
             name="historyStateType"
             type="radio"
             value={HISTORY_STATE_TYPE["REPLACE"]}
-            checked={value === HISTORY_STATE_TYPE["REPLACE"]}
+            checked={historyStateType === HISTORY_STATE_TYPE["REPLACE"]}
             onChange={handleChange}
           />
         </label>
