@@ -11,22 +11,24 @@ import SimpleRouter from "./components/SimpleRouter";
 import History from "./components/History/History";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.Fragment>
+  <React.StrictMode>
     <History>
-      <SimpleRouter.Router appLayout={<Layout />}>
-        <SimpleRouter.Route pathname="/">
-          <HomePage />
-        </SimpleRouter.Route>
-        <SimpleRouter.Route pathname="/step/1">
-          <StepOnePage />
-        </SimpleRouter.Route>
-        <SimpleRouter.Route pathname="/step/2">
-          <StepTwoPage />
-        </SimpleRouter.Route>
-        <SimpleRouter.Route pathname="/step/3">
-          <StepThreePage />
-        </SimpleRouter.Route>
-      </SimpleRouter.Router>
+      <Layout>
+        <SimpleRouter.Router>
+          <SimpleRouter.Route pathname="/">
+            <HomePage />
+          </SimpleRouter.Route>
+          <SimpleRouter.Route pathname="/step/1">
+            <StepOnePage />
+          </SimpleRouter.Route>
+          <SimpleRouter.Route pathname="/step/2">
+            <StepTwoPage />
+          </SimpleRouter.Route>
+          <SimpleRouter.Route pathname="/step/3">
+            <StepThreePage />
+          </SimpleRouter.Route>
+        </SimpleRouter.Router>
+      </Layout>
     </History>
-  </React.Fragment>
+  </React.StrictMode>
 );

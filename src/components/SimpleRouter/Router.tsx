@@ -27,13 +27,7 @@ export type ContextValueType = {
 
 export const RouterContext = createContext<ContextValueType>(null!);
 
-interface Props {
-  appLayout?: React.ReactElement;
-}
-export default function Router({
-  children,
-  appLayout,
-}: PropsWithChildren<Props>) {
+export default function Router({ children }: PropsWithChildren) {
   /** @description <Route> 로 등록된 컴포넌트 상태값 */
   const [routes] = useState<RouteItem[]>(() => {
     return (
@@ -115,9 +109,7 @@ export default function Router({
 
   return (
     <RouterContext.Provider value={value}>
-      {currentRouteItem && appLayout
-        ? React.cloneElement(appLayout, {}, currentRouteItem.component)
-        : currentRouteItem.component}
+      {currentRouteItem && currentRouteItem.component}
     </RouterContext.Provider>
   );
 }

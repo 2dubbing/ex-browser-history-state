@@ -10,12 +10,14 @@ interface Props {
  * @description a 태그에 의한 라우트핸들러 훅
  */
 export default function useRouteAnchorTag({ navigate }: Props) {
-  const handleClickAnchorTag = useCallback(
+  const handleClick = useCallback(
     (event: MouseEvent) => {
-      event.preventDefault();
       if (!event.target || (event.target as HTMLElement).tagName !== "A") {
         return;
       }
+
+      // Anchor tag
+      event.preventDefault();
       const $anchor = event.target as HTMLAnchorElement;
       navigate($anchor.pathname, { type: "PUSH" });
     },
@@ -23,11 +25,11 @@ export default function useRouteAnchorTag({ navigate }: Props) {
   );
 
   useEffect(() => {
-    window.addEventListener("click", handleClickAnchorTag);
+    window.addEventListener("click", handleClick);
     return () => {
-      window.removeEventListener("click", handleClickAnchorTag);
+      window.removeEventListener("click", handleClick);
     };
-  }, [handleClickAnchorTag]);
+  }, [handleClick]);
 
   return null;
 }

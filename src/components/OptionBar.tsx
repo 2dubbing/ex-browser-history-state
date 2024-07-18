@@ -16,27 +16,27 @@ export default function OptionBar() {
 
       <div className="radio-group">
         <label htmlFor="push">
+          pushState
           <input
             id="push"
             name="historyStateType"
             type="radio"
-            value={value}
+            value={HISTORY_STATE_TYPE["PUSH"]}
             checked={value === HISTORY_STATE_TYPE["PUSH"]}
             onChange={handleChange}
           />
-          pushState
         </label>
 
         <label htmlFor="replace">
+          replaceState
           <input
             id="replace"
             name="historyStateType"
             type="radio"
-            value={value}
+            value={HISTORY_STATE_TYPE["REPLACE"]}
             checked={value === HISTORY_STATE_TYPE["REPLACE"]}
             onChange={handleChange}
           />
-          replaceState
         </label>
       </div>
     </aside>
