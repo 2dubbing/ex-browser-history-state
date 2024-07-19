@@ -76,7 +76,6 @@ export default function History({ children }: PropsWithChildren) {
     stack,
     pushStack,
     replaceStack,
-    // replaceUnusedPathnameWithNewPathname,
     windowHistory: windowHistoryRef.current,
   };
 
