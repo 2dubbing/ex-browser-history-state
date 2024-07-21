@@ -1,4 +1,10 @@
-import { createContext, PropsWithChildren, useCallback, useState } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  Suspense,
+  useCallback,
+  useState,
+} from "react";
 import HistoryStackUI from "../HistoryStackUI";
 import OptionBar from "./OptionBar";
 import NavigationBar from "./NavigationBar";
@@ -33,7 +39,9 @@ export default function Layout({ children }: PropsWithChildren) {
       </header>
       <article className="main-container">
         <section className="page-wrapper">
-          <StepPageController>{children}</StepPageController>
+          <Suspense fallback={<div>....</div>}>
+            <StepPageController>{children}</StepPageController>
+          </Suspense>
         </section>
         <section className="history-stack-wrapper">
           <HistoryStackUI />

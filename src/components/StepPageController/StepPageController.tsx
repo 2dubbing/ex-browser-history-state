@@ -1,43 +1,42 @@
-// import stepStatusJSON from "../../step-status.json";
-import { createContext, PropsWithChildren, useState } from "react";
+import { initialDB, DexieSchema } from "../../db";
+import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { StepType } from "../../types";
 import { PAGE_DATA } from "../../constant";
 
-// const stepStatusData = stepStatusJSON;
-
 type ContextValueType = {
-  currentStep: StepType;
-  changeStep: (step: StepType) => void;
+  isCompletedStep: (step: StepType) => Promise<boolean>;
   getStepCondition: <S extends StepType>(step: S) => (typeof PAGE_DATA)[S];
-  submitStepStatus: (step: StepType, status: boolean) => Promise<void>;
+  submitStepStatus: (step: StepType, isCompleted: boolean) => Promise<boolean>;
 };
 
 export const StepPageControllerContext = createContext<ContextValueType>(null!);
 
 export default function StepPageController({ children }: PropsWithChildren) {
-  const [currentStep, setStep] = useState<StepType>(0);
-  // const [stepStatus, setStepStatus] = useState(() =>
-  //   Object.entries(stepStatusData).map(([step, status]) => ({
-  //     step: Number(step) as StepType,
-  //     status,
-  //   }))
-  // );
+  const [db, setDB] = useState<DexieSchema>();
 
-  const changeStep = (step: StepType) => {
-    setStep(step);
+  useEffect(() => {
+    initialDB.then((db) => setDB(db));
+  }, []);
+
+  const isCompletedStep = async (step: StepType) => {
+    if (!db) return false;
+    const res = await db.steps.get(step);
+    if (!res) return false;
+    return res.isCompleted ?? false;
   };
 
   const getStepCondition = <S extends StepType>(step: S) => {
     return PAGE_DATA[step];
   };
 
-  const submitStepStatus = async (step: StepType, status: boolean) => {
-    // TODO: https://dexie.org/docs/Tutorial/React(indexedDB) 저장 후 setState
+  const submitStepStatus = async (step: StepType, isCompleted: boolean) => {
+    if (!db) return false;
+    const res = await db.steps.update(step, { isCompleted });
+    return res > 0;
   };
 
   const provideValue = {
-    currentStep,
-    changeStep,
+    isCompletedStep,
     getStepCondition,
     submitStepStatus,
   };
