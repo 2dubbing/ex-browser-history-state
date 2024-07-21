@@ -3,7 +3,8 @@ import HistoryStackUI from "../HistoryStackUI";
 import OptionBar from "./OptionBar";
 import NavigationBar from "./NavigationBar";
 import { HISTORY_STATE_TYPE } from "../../constant";
-import { NavigateType } from "../SimpleRouter/type";
+import { NavigateType } from "../../types";
+import StepPageController from "../StepPageController/StepPageController";
 
 type ContextValueType = {
   /** PUSH -> pushState / REPLACE -> replaceState */
@@ -31,7 +32,9 @@ export default function Layout({ children }: PropsWithChildren) {
         <NavigationBar />
       </header>
       <article className="main-container">
-        <section className="page-wrapper">{children}</section>
+        <section className="page-wrapper">
+          <StepPageController>{children}</StepPageController>
+        </section>
         <section className="history-stack-wrapper">
           <HistoryStackUI />
         </section>

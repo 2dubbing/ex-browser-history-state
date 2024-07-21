@@ -1,6 +1,6 @@
 import React from "react";
 import { isReactComponent } from "../../utils";
-import { RouteProps } from "./type";
+import { RouteProps } from "../../types";
 
 export default function Route({ children }: RouteProps) {
   if (React.Children.count(children) !== 1) {

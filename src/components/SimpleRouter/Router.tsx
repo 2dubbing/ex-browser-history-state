@@ -6,7 +6,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { NavigateType, RouteItem, RouteProps } from "./type";
 import React from "react";
 import { isReactComponent } from "../../utils";
 import Route from "./Route";
@@ -14,6 +13,7 @@ import usePopStateEvent from "./hooks/usePopStateEvent";
 import useRouteAnchorTag from "./hooks/useRouteAnchorTag";
 import { useHistory } from "../History/useHistory";
 import { useLayout } from "../Layout/useLayout";
+import { NavigateType, RouteItem, RouteProps } from "../../types";
 
 const RouteType = (<Route pathname="" />).type;
 const isRouteComponent = (

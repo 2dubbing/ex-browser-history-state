@@ -1,7 +1,7 @@
 import { SyntheticEvent } from "react";
 import { HISTORY_STATE_TYPE } from "../../constant";
-import { NavigateType } from "../SimpleRouter/type";
 import { useLayout } from "./useLayout";
+import { NavigateType } from "../../types";
 
 export default function OptionBar() {
   const { historyStateType, changeHistoryStateType } = useLayout();

@@ -10,6 +10,8 @@ import Layout from "./components/Layout/Layout";
 import SimpleRouter from "./components/SimpleRouter";
 import History from "./components/History/History";
 
+import {} from "./db";
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <History>

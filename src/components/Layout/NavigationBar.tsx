@@ -1,4 +1,4 @@
-import { PAGE_URL_PATHNAMES } from "../../constant";
+import { PAGE_DATA } from "../../constant";
 import { useHistory } from "../History/useHistory";
 
 export default function NavigationBar() {
@@ -7,7 +7,7 @@ export default function NavigationBar() {
 
   return (
     <nav>
-      {PAGE_URL_PATHNAMES.map((item) => (
+      {PAGE_DATA.map((item) => (
         <a
           key={item.pathname}
           className={`link${

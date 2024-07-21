@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { HISTORY_STATE_TYPE } from "../../constant";
+import { HISTORY_STATE_TYPE, PAGE_DATA } from "./constant";
 
 export type RouteItem = {
   pathname: string;
@@ -12,3 +12,5 @@ export type RouteProps = PropsWithChildren<{
 }>;
 
 export type NavigateType = keyof typeof HISTORY_STATE_TYPE;
+
+export type StepType = (typeof PAGE_DATA)[number]["step"];
