@@ -1,7 +1,8 @@
 import Dexie, { type EntityTable } from "dexie";
+import { StepType } from "../types";
 
 type StepsSchemaType = {
-  step: number;
+  step: StepType;
   isCompleted: boolean;
   createdAt: TDateISO;
   updatedAt: TDateISO;
@@ -26,7 +27,7 @@ const createSchema = () => {
   const res = db.steps
     .bulkAdd(
       new Array(4).fill(true).map((_, index) => ({
-        step: index,
+        step: index as unknown as StepType,
         isCompleted: false,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),

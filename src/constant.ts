@@ -13,8 +13,8 @@ export const PAGE_DATA = [
     label: "1단계",
     step: 1,
     isCompleted: {
-      true: { nextStep: 2, prevStep: 1 },
-      false: { nextStep: null, prevStep: null },
+      true: { nextStep: 2, prevStep: 0 },
+      false: { nextStep: null, prevStep: 0 },
     },
   },
   {

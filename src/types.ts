@@ -14,3 +14,4 @@ export type RouteProps = PropsWithChildren<{
 export type NavigateType = keyof typeof HISTORY_STATE_TYPE;
 
 export type StepType = (typeof PAGE_DATA)[number]["step"];
+export type StepCondition = (typeof PAGE_DATA)[number]["isCompleted"]

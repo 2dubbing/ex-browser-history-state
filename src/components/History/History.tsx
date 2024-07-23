@@ -20,10 +20,8 @@ type ContextValueType = {
 export const HistoryContext = createContext<ContextValueType>(null!);
 
 export default function History({ children }: PropsWithChildren) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [stack, setStack] = useState<string[]>(() => [
-    window.location.pathname,
-  ]);
+  const [stack, setStack] = useState<string[]>([window.location.pathname]);
+  const [currentIndex, setCurrentIndex] = useState(() => stack.length - 1);
 
   const windowHistoryRef = useRef(window.history);
 
@@ -47,7 +45,6 @@ export default function History({ children }: PropsWithChildren) {
     [currentIndex]
   );
 
-  // TODO: replace 시 스택, 인덱스 처리 작업
   const replaceStack = useCallback(
     (pathname: string) => {
       const lastIdx = stack.length;
@@ -57,8 +54,9 @@ export default function History({ children }: PropsWithChildren) {
           return draft;
         })
       );
+      setCurrentIndex(currentIndex);
     },
-    [stack]
+    [currentIndex, stack]
   );
 
   const pushStack = (pathname: string) => {

@@ -11,7 +11,7 @@ import SimpleRouter from "./components/SimpleRouter";
 import History from "./components/History/History";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  <React.Fragment>
     <History>
       <Layout>
         <SimpleRouter.Router>
@@ -30,5 +30,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </SimpleRouter.Router>
       </Layout>
     </History>
-  </React.StrictMode>
+  </React.Fragment>
 );

@@ -72,18 +72,20 @@ export default function Router({ children }: PropsWithChildren) {
   }, [currentPathname, existRoutePathname, routes]);
 
   const navigate = useCallback(
-    (pathname: string) => {
-      console.log("navigate: ", pathname, historyStateType);
-
+    (pathname: string, option?: { type: NavigateType }) => {
       const findedRouteItem = existRoutePathname(pathname);
       if (!findedRouteItem) {
         throw Error(`${pathname} 으로 등록된 컴포넌트가 없습니다.`);
       }
 
-      if (historyStateType === "PUSH") {
+      const stateType = (option?.type && option.type) || historyStateType;
+
+      console.log("navigate: ", pathname, stateType);
+
+      if (stateType === "PUSH") {
         windowHistory.pushState({}, "", findedRouteItem.pathname);
         pushStack(findedRouteItem.pathname);
-      } else if (historyStateType === "REPLACE") {
+      } else if (stateType === "REPLACE") {
         windowHistory.replaceState({}, "", findedRouteItem.pathname);
         replaceStack(findedRouteItem.pathname);
       } else {
@@ -100,6 +102,7 @@ export default function Router({ children }: PropsWithChildren) {
       windowHistory,
     ]
   );
+
 
   useRouteAnchorTag({ navigate });
   usePopStateEvent();
