@@ -39,7 +39,15 @@ export default function Layout({ children }: PropsWithChildren) {
       </header>
       <article className="main-container">
         <section className="page-wrapper">
-          <Suspense fallback={<div>....</div>}>
+          <Suspense
+            fallback={
+              <div>
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Possimus eaque quam aliquid sint facilis sed inventore iure
+                obcaecati necessitatibus similique?
+              </div>
+            }
+          >
             <StepPageController>{children}</StepPageController>
           </Suspense>
         </section>

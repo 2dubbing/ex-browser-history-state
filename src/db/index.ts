@@ -48,7 +48,7 @@ const createSchema = () => {
   return db;
 };
 
-const initialDB = (async () => {
+const initialDB = async () => {
   try {
     const exists = await Dexie.exists(DATABASE_NAME);
     if (exists) {
@@ -69,7 +69,7 @@ const initialDB = (async () => {
     );
     throw error;
   }
-})();
+};
 
 export type { StepsSchemaType };
 export { initialDB };

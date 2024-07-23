@@ -2,8 +2,11 @@ import React, { useRef } from "react";
 import { useStepPageController } from "../components/StepPageController/useStepPageController";
 
 export default function MainPage() {
-  const { getStepCondition } = useStepPageController();
+  const { steps, getStepCondition } = useStepPageController();
   const stepCondition = useRef(getStepCondition(0)).current;
+
+  console.log("메인페이지 step 이동 조건: ", stepCondition);
+  console.log("steps: ", steps);
 
   return (
     <React.Fragment>
