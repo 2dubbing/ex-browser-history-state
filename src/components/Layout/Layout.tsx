@@ -1,53 +1,19 @@
-import {
-  createContext,
-  PropsWithChildren,
-  Suspense,
-  useCallback,
-  useState,
-} from "react";
+import { createContext, PropsWithChildren, Suspense } from "react";
 import HistoryStackUI from "../HistoryStackUI";
-import OptionBar from "./OptionBar";
 import NavigationBar from "./NavigationBar";
-import { HISTORY_STATE_TYPE } from "../../constant";
-import { NavigateType } from "../../types";
 import StepPageController from "../StepPageController/StepPageController";
 
-type ContextValueType = {
-  /** PUSH -> pushState / REPLACE -> replaceState */
-  historyStateType: NavigateType;
-  changeHistoryStateType: (type: NavigateType) => void;
-};
-
-export const LayoutContext = createContext<ContextValueType>(null!);
+export const LayoutContext = createContext({});
 
 export default function Layout({ children }: PropsWithChildren) {
-  const [historyStateType, setHistoryStateType] = useState<NavigateType>(
-    HISTORY_STATE_TYPE["PUSH"]
-  );
-
-  const changeHistoryStateType = useCallback((type: NavigateType) => {
-    setHistoryStateType(type);
-  }, []);
-
-  const value = { historyStateType, changeHistoryStateType };
-
   return (
-    <LayoutContext.Provider value={value}>
+    <LayoutContext.Provider value={{}}>
       <header>
-        <OptionBar />
         <NavigationBar />
       </header>
       <article className="main-container">
         <section className="page-wrapper">
-          <Suspense
-            fallback={
-              <div>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                Possimus eaque quam aliquid sint facilis sed inventore iure
-                obcaecati necessitatibus similique?
-              </div>
-            }
-          >
+          <Suspense fallback={<p>데이터 로딩 중...</p>}>
             <StepPageController>{children}</StepPageController>
           </Suspense>
         </section>

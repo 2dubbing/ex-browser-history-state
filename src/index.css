@@ -41,16 +41,6 @@ header {
   column-gap: 24px;
 }
 
-.option-wrapper {
-  display: flex;
-  justify-content: center;
-  column-gap: 12px;
-}
-.option-wrapper .radio-group {
-  display: flex;
-  column-gap: 4px;
-}
-
 .main-container {
   width: 100%;
   display: flex;
