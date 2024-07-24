@@ -9,6 +9,7 @@ import {
 import { StepCondition, StepType } from "../../types";
 import { PAGE_DATA } from "../../constant";
 import { wrapPromiseWithSuspense } from "../../utils";
+import useInitialHistoryPush from "./useInitialHistoryPush";
 
 type ContextValueType = {
   steps: StepsSchemaType[];
@@ -26,6 +27,8 @@ const wrappedInitialDB = wrapPromiseWithSuspense(initialDB);
 export const StepDataStoreContext = createContext<ContextValueType>(null!);
 
 export default function StepDataStore({ children }: PropsWithChildren) {
+  useInitialHistoryPush();
+
   const [steps, setSteps] = useState<StepsSchemaType[]>([]);
   const dbInstance = wrappedInitialDB.read();
 
