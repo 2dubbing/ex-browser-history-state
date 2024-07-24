@@ -1,7 +1,7 @@
 # ex-browser-history-state
 
-페이지 이동 시 브라우저 History stack 상태 학습 및 pushState / replaceState 활용 학습
-
+- SPA 구조에서 pushState / replaceState 사용한 페이지 이동 처리
+- 웹사이트 최초 진입 시, 강제로 history state stack 에 페이지 추가하기
 
 ### 프로젝트 실행방법
 
