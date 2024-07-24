@@ -1,44 +1,28 @@
 import React from "react";
-import { useStepPageStore } from "../components/StepPageStore/useStepPageStore";
-import { useStepUI } from "../hooks/useStepUI";
+import { useStepDataStore } from "../components/StepDataStore/useStepDataStore";
 import { useNavigate } from "react-router-dom";
 
 export default function MainPage() {
   const navigate = useNavigate();
-  const { steps } = useStepPageStore();
-  const { isCompleted, stepCondition } = useStepUI({ step: 0 });
+  const { steps, resetAllStepStatus } = useStepDataStore();
 
   const handleNextStep = () => {
-    const pathname =
-      typeof stepCondition?.nextStep === "number"
-        ? stepCondition?.nextStep > 0
-          ? `/step/${stepCondition.nextStep}`
-          : "/"
-        : null;
-    pathname && navigate(pathname);
+    navigate(`/step/1`);
   };
 
-  console.log("steps: ", steps);
-  console.log(
-    "step: ",
-    0,
-    " isCompleted: ",
-    isCompleted,
-    " stepCondition: ",
-    stepCondition
-  );
+  const isClearAllSteps = steps
+    .filter((data) => data.step !== 0)
+    .every((data) => data.isCompleted);
 
   return (
     <React.Fragment>
       <h2>메인 페이지</h2>
-      <ul>
-        {steps.map((data) => (
-          <li key={data.step}>
-            {data.step}단계 {data.isCompleted ? "완료" : "미완료"} 상태
-          </li>
-        ))}
-      </ul>
-      <button onClick={handleNextStep}>다음단계 진행</button>
+      <p>전체완료 여부: {isClearAllSteps ? "완료" : "미완료"}</p>
+      {isClearAllSteps ? (
+        <button onClick={resetAllStepStatus}>상태 리셋하기</button>
+      ) : (
+        <button onClick={handleNextStep}>다음단계 진행</button>
+      )}
     </React.Fragment>
   );
 }

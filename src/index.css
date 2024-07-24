@@ -16,10 +16,10 @@ nav {
   line-height: 50px;
   text-align: center;
 }
-nav > a {
+nav > span {
   padding: 8px 20px;
 }
-nav > a.active {
+nav > span.active {
   background-color: #646cff;
   color: #000;
 }

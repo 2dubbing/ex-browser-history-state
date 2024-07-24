@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import NavigationBar from "./NavigationBar";
-import StepPageController from "../StepPageStore/StepPageStore";
+import StepPageController from "../StepDataStore/StepDataStore";
 import { Outlet } from "react-router-dom";
 import React from "react";
 

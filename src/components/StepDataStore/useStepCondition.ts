@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useStepPageStore } from "../components/StepPageStore/useStepPageStore";
-import { StepUIProps } from "../components/StepUI";
+import { useStepDataStore } from "./useStepDataStore";
+import { StepType } from "../../types";
 
-export const useStepUI = ({ step }: StepUIProps) => {
-  const { steps, getStepCondition } = useStepPageStore();
+export const useStepCondition = (step: StepType) => {
+  const { steps, getStepCondition } = useStepDataStore();
   const [isCompleted, setComplete] = useState(false);
   const [stepCondition, setStepCondition] = useState<null | ReturnType<
     typeof getStepCondition

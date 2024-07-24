@@ -18,13 +18,14 @@ type ContextValueType = {
     isCompleted: C
   ) => StepCondition[C];
   submitStepStatus: (step: StepType, isCompleted: boolean) => void;
+  resetAllStepStatus: () => void;
 };
 
 const wrappedInitialDB = wrapPromiseWithSuspense(initialDB);
 
-export const StepPageStoreContext = createContext<ContextValueType>(null!);
+export const StepDataStoreContext = createContext<ContextValueType>(null!);
 
-export default function StepPageStore({ children }: PropsWithChildren) {
+export default function StepDataStore({ children }: PropsWithChildren) {
   const [steps, setSteps] = useState<StepsSchemaType[]>([]);
   const dbInstance = wrappedInitialDB.read();
 
@@ -58,16 +59,36 @@ export default function StepPageStore({ children }: PropsWithChildren) {
     await reloadSteps();
   };
 
+  const resetAllStepStatus = async () => {
+    const updatedRows = await dbInstance.steps.bulkUpdate([
+      {
+        key: 1,
+        changes: { isCompleted: false },
+      },
+      {
+        key: 2,
+        changes: { isCompleted: false },
+      },
+      {
+        key: 3,
+        changes: { isCompleted: false },
+      },
+    ]);
+    console.log("updatedRows: ", updatedRows);
+    await reloadSteps();
+  };
+
   const provideValue = {
     steps,
     isCompletedStep,
     getStepCondition,
     submitStepStatus,
+    resetAllStepStatus,
   };
 
   return (
-    <StepPageStoreContext.Provider value={provideValue}>
+    <StepDataStoreContext.Provider value={provideValue}>
       {children}
-    </StepPageStoreContext.Provider>
+    </StepDataStoreContext.Provider>
   );
 }
