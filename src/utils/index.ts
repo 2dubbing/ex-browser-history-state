@@ -43,3 +43,10 @@ export const wrapPromiseWithSuspense = <T>(fetcher: () => Promise<T>) => {
     .catch((err) => err);
   return wrapPromise<T>(promise);
 };
+
+export const delay = (ms = 1000) =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, ms);
+  });
