@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useStepPageController } from "../components/StepPageController/useStepPageController";
+import { useStepPageStore } from "../components/StepPageStore/useStepPageStore";
 import { StepUIProps } from "../components/StepUI";
 
 export const useStepUI = ({ step }: StepUIProps) => {
-  const { steps, getStepCondition } = useStepPageController();
+  const { steps, getStepCondition } = useStepPageStore();
   const [isCompleted, setComplete] = useState(false);
   const [stepCondition, setStepCondition] = useState<null | ReturnType<
     typeof getStepCondition

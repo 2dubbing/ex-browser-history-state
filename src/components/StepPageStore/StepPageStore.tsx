@@ -22,9 +22,9 @@ type ContextValueType = {
 
 const wrappedInitialDB = wrapPromiseWithSuspense(initialDB);
 
-export const StepPageControllerContext = createContext<ContextValueType>(null!);
+export const StepPageStoreContext = createContext<ContextValueType>(null!);
 
-export default function StepPageController({ children }: PropsWithChildren) {
+export default function StepPageStore({ children }: PropsWithChildren) {
   const [steps, setSteps] = useState<StepsSchemaType[]>([]);
   const dbInstance = wrappedInitialDB.read();
 
@@ -66,8 +66,8 @@ export default function StepPageController({ children }: PropsWithChildren) {
   };
 
   return (
-    <StepPageControllerContext.Provider value={provideValue}>
+    <StepPageStoreContext.Provider value={provideValue}>
       {children}
-    </StepPageControllerContext.Provider>
+    </StepPageStoreContext.Provider>
   );
 }

@@ -1,9 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import { PAGE_DATA } from "../../constant";
-import { useHistory } from "../History/useHistory";
+import { SyntheticEvent } from "react";
 
 export default function NavigationBar() {
-  const { stack, currentIndex } = useHistory();
-  const currentPathname = stack[currentIndex];
+  const navigate = useNavigate();
+  const currentPathname = window.location.pathname;
+
+  const handleClick = (event: SyntheticEvent) => {
+    event.preventDefault();
+    const $anchor = event.target as HTMLAnchorElement;
+    if ($anchor.pathname === currentPathname) return;
+    navigate($anchor.pathname);
+  };
 
   return (
     <nav>
@@ -14,6 +22,7 @@ export default function NavigationBar() {
             item.pathname === currentPathname ? " active" : ""
           }`}
           href={item.pathname}
+          onClick={handleClick}
         >
           {item.label}
         </a>

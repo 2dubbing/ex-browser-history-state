@@ -1,16 +1,16 @@
-import { useStepPageController } from "./StepPageController/useStepPageController";
+import { useStepPageStore } from "./StepPageStore/useStepPageStore";
 import { StepType } from "../types";
-import { useRouter } from "./SimpleRouter";
 import { useStepUI } from "../hooks/useStepUI";
 import { Fragment } from "react/jsx-runtime";
+import { useNavigate } from "react-router-dom";
 
 export interface StepUIProps {
   step: StepType;
 }
 
 export default function StepUI({ step }: StepUIProps) {
-  const { navigate } = useRouter();
-  const { submitStepStatus } = useStepPageController();
+  const navigate = useNavigate();
+  const { submitStepStatus } = useStepPageStore();
   const { isCompleted, stepCondition } = useStepUI({ step });
   console.log(
     "step: ",
@@ -38,7 +38,7 @@ export default function StepUI({ step }: StepUIProps) {
           ? `/step/${stepCondition.prevStep}`
           : "/"
         : null;
-    pathname && navigate(pathname, { type: "REPLACE" });
+    pathname && navigate(pathname, { replace: true });
   };
 
   return (

@@ -1,27 +1,25 @@
-import { createContext, PropsWithChildren, Suspense } from "react";
-import HistoryStackUI from "../HistoryStackUI";
+import { Suspense } from "react";
 import NavigationBar from "./NavigationBar";
-import StepPageController from "../StepPageController/StepPageController";
+import StepPageController from "../StepPageStore/StepPageStore";
+import { Outlet } from "react-router-dom";
+import React from "react";
 
-export const LayoutContext = createContext({});
-
-export default function Layout({ children }: PropsWithChildren) {
+export default function Layout() {
   return (
-    <LayoutContext.Provider value={{}}>
+    <React.Fragment>
       <header>
         <NavigationBar />
       </header>
       <article className="main-container">
         <section className="page-wrapper">
           <Suspense fallback={<p>데이터 로딩 중...</p>}>
-            <StepPageController>{children}</StepPageController>
+            <StepPageController>
+              <Outlet />
+            </StepPageController>
           </Suspense>
-        </section>
-        <section className="history-stack-wrapper">
-          <HistoryStackUI />
         </section>
       </article>
       <footer></footer>
-    </LayoutContext.Provider>
+    </React.Fragment>
   );
 }

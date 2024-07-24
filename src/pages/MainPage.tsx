@@ -1,11 +1,11 @@
 import React from "react";
-import { useStepPageController } from "../components/StepPageController/useStepPageController";
+import { useStepPageStore } from "../components/StepPageStore/useStepPageStore";
 import { useStepUI } from "../hooks/useStepUI";
-import { useRouter } from "../components/SimpleRouter";
+import { useNavigate } from "react-router-dom";
 
 export default function MainPage() {
-  const { navigate } = useRouter();
-  const { steps } = useStepPageController();
+  const navigate = useNavigate();
+  const { steps } = useStepPageStore();
   const { isCompleted, stepCondition } = useStepUI({ step: 0 });
 
   const handleNextStep = () => {
